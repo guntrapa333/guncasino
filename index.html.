@@ -800,4 +800,114 @@ function toast(message) {
   window.toastTimer = setTimeout(() => el.classList.remove("show"), 2500);
 }
 
-functio
+function showPage(page) {
+  document.querySelectorAll(".page").forEach(el => {
+    el.classList.toggle("active", el.id === page);
+  });
+
+  document.querySelectorAll(".nav-btn").forEach(el => {
+    el.classList.toggle("active", el.dataset.page === page);
+  });
+
+  window.scrollTo(0, 0);
+}
+
+function claimDaily() {
+  const today = new Date().toDateString();
+
+  if (state.lastDaily === today) {
+    toast("Бонус уже получен сегодня!");
+    return;
+  }
+
+  state.gc += 500;
+  state.lastDaily = today;
+  state.streak += 1;
+
+  save();
+  toast("Получено 500 GC!");
+}
+
+function officialBuy() {
+  const input = document.getElementById("buyAmount");
+  const amount = Math.floor(Number(input.value));
+
+  if (!Number.isFinite(amount) || amount <= 0) {
+    toast("Введи правильное количество GF");
+    return;
+  }
+
+  const cost = amount * 1050;
+
+  if (state.gc < cost) {
+    toast("Недостаточно GC");
+    return;
+  }
+
+  state.gc -= cost;
+  state.gf += amount;
+
+  save();
+  input.value = "";
+  toast("Обмен выполнен!");
+}
+
+function officialSell() {
+  const input = document.getElementById("sellAmount");
+  const amount = Math.floor(Number(input.value));
+
+  if (!Number.isFinite(amount) || amount <= 0) {
+    toast("Введи правильное количество GF");
+    return;
+  }
+
+  if (state.gf < amount) {
+    toast("Недостаточно GF");
+    return;
+  }
+
+  state.gf -= amount;
+  state.gc += amount * 950;
+
+  save();
+  input.value = "";
+  toast("Обмен выполнен!");
+}
+
+function openGame(name) {
+  showPage("play");
+
+  const games = {
+    crash: ["🚀", "Краш"],
+    dice: ["🎲", "Кубик"],
+    roulette: ["🎡", "Рулетка"],
+    ball: ["🔮", "Шар"],
+    coin: ["🪙", "Монета"],
+    slots: ["🎰", "Слоты"],
+    mines: ["💣", "Мины"]
+  };
+
+  const game = games[name];
+
+  document.getElementById("playContent").innerHTML = `
+    <h1>${game[1]}</h1>
+    <div class="big-game-icon">${game[0]}</div>
+    <div class="panel">
+      <div class="row-title">Демо-режим</div>
+      <p class="notice">
+        Здесь пока доступен только интерфейс.
+        Игровая механика будет добавлена отдельно.
+      </p>
+      <button class="full-btn"
+        onclick="toast('Эта игра пока в разработке')">
+        Играть
+      </button>
+    </div>
+  `;
+}
+
+updateUI();
+</script>
+
+</body>
+</html>
