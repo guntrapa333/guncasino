@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GUN CASINO</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="theme-neon">
+    <div id="app">
+        <!-- Шапка -->
+        <header class="header">
+            <div class="user-pill">
+                <div class="avatar-wrap" id="avatar-frame">
+                    <img id="user-avatar" src="https://via.placeholder.com/40" alt="Avatar">
+                </div>
+                <div class="user-meta">
+                    <span id="user-name">@gun_trapa</span>
+                    <span class="level-badge">Ур. <span id="user-level">1</span></span>
+                </div>
+            </div>
+            <div class="balances">
+                <div class="balance-card gc"><span class="icon">🪙</span> <span id="bal-gc">1000</span></div>
+                <div class="balance-card gf"><span class="icon">💎</span> <span id="bal-gf">100</span></div>
+            </div>
+        </header>
+
+        <!-- Главные секции -->
+        <main class="content">
+            <!-- 1. Главная -->
+            <section id="page-home" class="page active">
+                <div class="banner">
+                    <h2>GUN CASINO</h2>
+                    <p>Игровая экосистема нового поколения</p>
+                    <button class="btn btn-primary" onclick="claimDailyBonus()">🔥 Забрать бонус</button>
+                </div>
+                <h3>Популярные аркады</h3>
+                <div class="cards-grid">
+                    <div class="card" onclick="openGame('crash')">🚀 Crash Arcade</div>
+                    <div class="card" onclick="openGame('dice')">🎲 Dice Challenge</div>
+                    <div class="card" onclick="openGame('coin')">🪙 Coin Flip</div>
+                </div>
+            </section>
+
+            <!-- 2. Игры -->
+            <section id="page-games" class="page">
+                <h2>Аркадные игры</h2>
+                <div id="game-view" class="game-container" style="display:none;">
+                    <button class="btn btn-sec" onclick="closeGame()">⬅ Назад</button>
+                    <div id="game-area"></div>
+                </div>
+                <div id="games-list" class="cards-grid">
+                    <div class="card" onclick="openGame('crash')"><h3>🚀 Crash</h3><p>Успей забрать очки до крушения</p></div>
+                    <div class="card" onclick="openGame('dice')"><h3>🎲 Dice</h3><p>Угадай результат кубика</p></div>
+                    <div class="card" onclick="openGame('coin')"><h3>🪙 Coin Flip</h3><p>Орёл или Решка</p></div>
+                </div>
+            </section>
+
+            <!-- 3. Задания -->
+            <section id="page-tasks" class="page">
+                <h2>Задания и Квесты</h2>
+                <div class="task-list">
+                    <div class="card task-card">
+                        <div>
+                            <h4>Зайти в приложение</h4>
+                            <p>Награда: 100 GC</p>
+                        </div>
+                        <button class="btn btn-sm" onclick="completeTask(1, 100)">Забрать</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. Маркет & Обменник -->
+            <section id="page-market" class="page">
+                <h2>Внутренний Маркет</h2>
+                <div class="exchange-box">
+                    <h3>Обменник GC / GF</h3>
+                    <div class="form-group">
+                        <input type="number" id="ex-amount" placeholder="Количество" value="100">
+                        <select id="ex-type">
+                            <option value="GC_GF">GC ➔ GF (10:1)</option>
+                            <option value="GF_GC">GF ➔ GC (1:8)</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-accent" onclick="processExchange()">Обменять</button>
+                </div>
+            </section>
+
+            <!-- 5. Профиль -->
+            <section id="page-profile" class="page">
+                <h2>Профиль игрока</h2>
+                <div class="profile-card">
+                    <p>Серия посещений (Streak): <b id="profile-streak">0 дней 🔥</b></p>
+                    <p>Всего игр сыграно: <b id="profile-games">0</b></p>
+                </div>
+                <h3>Полезные ссылки</h3>
+                <div class="links-list">
+                    <a href="https://t.me/gun_trapa" class="link-item" target="_blank">💬 Официальный канал</a>
+                </div>
+            </section>
+        </main>
+
+        <!-- Навигация -->
+        <nav class="bottom-nav">
+            <button class="nav-item active" onclick="switchPage('home')">🏠<span>Главная</span></button>
+            <button class="nav-item" onclick="switchPage('games')">🎮<span>Игры</span></button>
+            <button class="nav-item" onclick="switchPage('tasks')">📜<span>Задания</span></button>
+            <button class="nav-item" onclick="switchPage('market')">🛒<span>Маркет</span></button>
+            <button class="nav-item" onclick="switchPage('profile')">👤<span>Профиль</span></button>
+        </nav>
+    </div>
+
+    <script src="supabase.js"></script>
+    <script src="telegram.js"></script>
+    <script src="games.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
